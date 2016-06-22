@@ -1,12 +1,10 @@
 package com.thoughtworks.pos.bin;
 
-import com.thoughtworks.pos.common.EmptyShoppingCartException;
-import com.thoughtworks.pos.domains.Pos;
-import com.thoughtworks.pos.domains.ShoppingChart;
-import com.thoughtworks.pos.services.services.InputParser;
+import com.thoughtworks.pos.common.*;
+import com.thoughtworks.pos.domains.*;
+import com.thoughtworks.pos.services.services.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Administrator on 2015/1/2.
