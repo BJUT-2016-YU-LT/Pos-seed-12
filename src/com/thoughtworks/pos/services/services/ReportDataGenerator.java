@@ -2,9 +2,7 @@ package com.thoughtworks.pos.services.services;
 
 import com.thoughtworks.pos.common.EmptyShoppingCartException;
 import com.thoughtworks.pos.domains.*;
-
 import java.util.*;
-
 /**
  * Created by Administrator on 2014/12/31.
  */
@@ -20,6 +18,7 @@ public class ReportDataGenerator {
         if (items.size() <= 0) {
             throw new EmptyShoppingCartException();
         }
+
         List<ItemGroup> itemGroups = GetItemGroups(items);
         return new Report(itemGroups);
     }

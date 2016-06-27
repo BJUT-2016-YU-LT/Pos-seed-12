@@ -7,11 +7,7 @@ import java.util.ArrayList;
  */
 public class ShoppingChart {
     private ArrayList<Item> items = new ArrayList<Item>();
-
-    public void add(Item item) {
-        this.items.add(item);
-    }
-
+    public void add(Item item) { this.items.add(item);}
     public ArrayList<Item> getItems() {
         return items;
     }

@@ -4,12 +4,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thoughtworks.pos.domains.Item;
-import com.thoughtworks.pos.domains.ShoppingChart;
+import com.thoughtworks.pos.domains.*;
 import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -27,23 +24,21 @@ public class InputParser {
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
     }
 
-    public ShoppingChart parser() throws IOException {
-        return BuildShoppingChart(getBoughtItemBarCodes(), getItemIndexes());
-    }
+    public ShoppingChart parser() throws IOException { return BuildShoppingChart(getBoughtItemBarCodes(),getItemIndexes()); }
 
     private ShoppingChart BuildShoppingChart(String[] barCodes, HashMap<String, Item> itemIndexes) {
         ShoppingChart shoppingChart = new ShoppingChart();
         for (String barcode : barCodes) {
             Item mappedItem = itemIndexes.get(barcode);
-            Item item = new Item(barcode, mappedItem.getName(), mappedItem.getUnit(), mappedItem.getPrice(), mappedItem.getDiscount());
+            Item item = new Item(barcode, mappedItem.getName(), mappedItem.getUnit(), mappedItem.getPrice(), mappedItem.getDiscount(), mappedItem.getPromotion());
             shoppingChart.add(item);
         }
         return shoppingChart;
     }
 
     private String[] getBoughtItemBarCodes() throws IOException {
-        String itemsStr = FileUtils.readFileToString(itemsFile);
-        return objectMapper.readValue(itemsStr, String[].class);
+        String vipStr = FileUtils.readFileToString(itemsFile);
+        return objectMapper.readValue(vipStr, String[].class);
     }
 
     private HashMap<String, Item> getItemIndexes() throws IOException {
@@ -51,5 +46,4 @@ public class InputParser {
         TypeReference<HashMap<String,Item>> typeRef = new TypeReference<HashMap<String,Item>>() {};
         return objectMapper.readValue(itemsIndexStr, typeRef);
     }
-
 }

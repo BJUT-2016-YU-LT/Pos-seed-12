@@ -45,6 +45,7 @@ public class InputParserTest {
                 .append("\"name\": '电池',\n")
                 .append("\"unit\": '个',\n")
                 .append("\"price\": 2.00,\n")
+                .append("\"promotion\": false,\n")
                 .append("\"discount\": 0.8\n")
                 .append("}\n")
                 .append("}\n")
@@ -68,6 +69,7 @@ public class InputParserTest {
         assertThat(item.getUnit(), is("个"));
         assertThat(item.getPrice(), is(2.00));
         assertThat(item.getDiscount(), is(0.8));
+        assertThat(item.getPromotion(), is(false));
     }
 
     private void WriteToFile(File file, String content) throws FileNotFoundException {
