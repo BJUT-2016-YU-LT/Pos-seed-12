@@ -15,10 +15,8 @@ public class ReportDataGenerator {
 
     public Report generate() throws EmptyShoppingCartException {
         ArrayList<Item> items = shoppingChart.getItems();
-        if (items.size() <= 0) {
+        if (items.size() <= 0)
             throw new EmptyShoppingCartException();
-        }
-
         List<ItemGroup> itemGroups = GetItemGroups(items);
         return new Report(itemGroups);
     }
@@ -34,9 +32,8 @@ public class ReportDataGenerator {
         LinkedHashMap<String, List<Item>> map = new LinkedHashMap<String, List<Item>>();
         for (Item item : items) {
             String itemBarCode = item.getBarcode();
-            if (!map.containsKey(itemBarCode)) {
+            if (!map.containsKey(itemBarCode))
                 map.put(itemBarCode, new ArrayList<Item>());
-            }
             map.get(itemBarCode).add(item);
         }
         return map;

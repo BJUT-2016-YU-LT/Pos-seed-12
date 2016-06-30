@@ -7,37 +7,35 @@ import java.util.List;
  */
 public class Report{
     private List<ItemGroup> itemGroupies;
-    public Report(List<ItemGroup> itemGroupies){
-        this.itemGroupies = itemGroupies;
-    }
 
-    public List<ItemGroup> getItemGroupies() {
-        return itemGroupies;
-    }
+    public Report(List<ItemGroup> itemGroupies){ this.itemGroupies = itemGroupies; }
 
+    public List<ItemGroup> getItemGroupies() { return itemGroupies; }
 
-    public double getTotal(){
-
+    public double getTotal(Vip user){
         double result = 0.00;
-        for (ItemGroup itemGroup : itemGroupies)
-            result += itemGroup.subTotal();
-
-        return result;
-
-    }
-
-    public double getSaving(){
-
-        double result = 0.00;
-        for (ItemGroup itemGroup : itemGroupies)
-            result += itemGroup.saving();
+        for (ItemGroup itemGroup : itemGroupies) {
+            if (itemGroup.promotion() == true)
+                result -= itemGroup.groupPrice();
+            result += itemGroup.subTotal(user);
+        }
         return result;
     }
+
+    public double getSaving(Vip user){
+        double result = 0.00;
+        for (ItemGroup itemGroup : itemGroupies) {
+            if(itemGroup.promotion() == true)
+                result += itemGroup.groupPrice();
+            result += itemGroup.saving(user);
+        }
+        return result;
+    }
+
     public boolean getPromotion(){
-        boolean result = false;
         for (ItemGroup itemGroup : itemGroupies)
-            if (itemGroup.promotion()==true) result = true;
-        return result;
-
+            if (itemGroup.promotion() == true)
+                return true;
+        return false;
     }
 }

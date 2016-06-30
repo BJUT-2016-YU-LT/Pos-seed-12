@@ -2,15 +2,11 @@
  * Created by Administrator on 2015/1/2.
  */
 
-import com.thoughtworks.pos.domains.Item;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import com.thoughtworks.pos.domains.*;
+import org.junit.*;
 import com.thoughtworks.pos.services.services.InputParser;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -20,11 +16,13 @@ public class InputParserTest {
 
     private File indexFile;
     private File itemsFile;
+    private File vipFile;
 
     @Before
     public void setUp() throws Exception {
         indexFile = new File("./sampleIndex.json");
         itemsFile = new File("./itemsFile.json");
+        vipFile = new File("./vipsFile.json");
     }
 
     @After
@@ -35,10 +33,13 @@ public class InputParserTest {
         if(itemsFile.exists()){
             itemsFile.delete();
         }
+        if(vipFile.exists()){
+            vipFile.delete();
+        }
     }
 
     @Test
-    public void testParseJsonFileToItems() throws Exception {
+    public void testParseJsonFileToItemsAndVip() throws Exception {
         String sampleIndex = new StringBuilder()
                 .append("{\n")
                 .append("'ITEM000004':{\n")
@@ -53,16 +54,31 @@ public class InputParserTest {
         WriteToFile(indexFile, sampleIndex);
 
         String sampleItems = new StringBuilder()
-                .append("[\n")
-                .append("\"ITEM000004\"")
+                .append("{\n")
+                .append("\"user\":\"USER0001\",")
+                .append("\"items\":[\n")
+                .append("\"ITEM000004\",")
+                .append("\"ITEM000004\",")
                 .append("]")
+                .append("}")
                 .toString();
         WriteToFile(itemsFile, sampleItems);
 
-        InputParser inputParser = new InputParser(indexFile, itemsFile);
-        ArrayList<Item> items = inputParser.parser().getItems();
+        String sampleVip = new StringBuilder()
+                .append("{\n")
+                .append("'USER0001':{\n")
+                .append("\"name\": '张三',\n")
+                .append("\"point\": 200,\n")
+                .append("\"isVip\": true,\n")
+                .append("}\n")
+                .append("}\n")
+                .toString();
+        WriteToFile(vipFile, sampleVip);
 
-        assertThat(items.size(), is(1));
+        InputParser inputParser = new InputParser(indexFile, itemsFile,vipFile);
+        ArrayList<Item> items = inputParser.parser().getItems();
+        Vip vip = inputParser.BuildVip();
+        assertThat(items.size(), is(2));
         Item item = items.get(0);
         assertThat(item.getName(), is("电池"));
         assertThat(item.getBarcode(), is("ITEM000004"));
@@ -70,6 +86,10 @@ public class InputParserTest {
         assertThat(item.getPrice(), is(2.00));
         assertThat(item.getDiscount(), is(0.8));
         assertThat(item.getPromotion(), is(false));
+        assertThat(vip.getBarcode(), is("USER0001"));
+        assertThat(vip.getPoint(), is(200));
+        assertThat(vip.getName(), is("张三"));
+        assertThat(vip.getVip(), is(true));
     }
 
     private void WriteToFile(File file, String content) throws FileNotFoundException {
@@ -92,15 +112,31 @@ public class InputParserTest {
         WriteToFile(indexFile, sampleIndex);
 
         String sampleItems = new StringBuilder()
-                .append("[\n")
-                .append("\"ITEM000004\"")
+                .append("{\n")
+                .append("\"user\":\"USER0001\",")
+                .append("\"items\":[\n")
+                .append("\"ITEM000004\",")
+                .append("\"ITEM000004\",")
                 .append("]")
+                .append("}")
                 .toString();
         WriteToFile(itemsFile, sampleItems);
 
-        InputParser inputParser = new InputParser(indexFile, itemsFile);
+        String sampleVip = new StringBuilder()
+                .append("{\n")
+                .append("'USER0001':{\n")
+                .append("\"name\": '张三',\n")
+                .append("\"point\": 200,\n")
+                .append("\"isVip\": true,\n")
+                .append("}\n")
+                .append("}\n")
+                .toString();
+        WriteToFile(vipFile, sampleVip);
+
+        InputParser inputParser = new InputParser(indexFile, itemsFile, vipFile);
         ArrayList<Item> items = inputParser.parser().getItems();
         Item item = items.get(0);
         assertThat(item.getDiscount(), is(1.00));
+        assertThat(item.getVipDiscount(), is(1.00));
     }
 }
