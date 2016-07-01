@@ -35,6 +35,9 @@ public class PosTest {
                         + "----------------------\n"
                         + "总计：3.00(元)\n"
                         + "获得积分：0分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -66,6 +69,9 @@ public class PosTest {
                         + "总计：6.00(元)\n"
                         + "节省：3.00(元)\n"
                         + "获得积分：1分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -92,6 +98,9 @@ public class PosTest {
                         + "----------------------\n"
                         + "总计：5.00(元)\n"
                         + "获得积分：1分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -119,6 +128,9 @@ public class PosTest {
                         + "总计：5.40(元)\n"
                         + "节省：0.60(元)\n"
                         + "获得积分：1分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -144,6 +156,9 @@ public class PosTest {
                         + "总计：1.44(元)\n"
                         + "节省：0.56(元)\n"
                         + "获得积分：0分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -195,8 +210,10 @@ public class PosTest {
                         + "名称：雪碧，数量：1瓶，单价：4.00(元)，小计：4.00(元)\n"
                         + "----------------------\n"
                         + "总计：9.00(元)\n"
-                        + "节省：0.40(元)\n"
                         + "获得积分：1分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -233,6 +250,9 @@ public class PosTest {
                         + "总计：1.60(元)\n"
                         + "节省：0.40(元)\n"
                         + "获得积分：0分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
@@ -264,6 +284,9 @@ public class PosTest {
                         + "总计：7.60(元)\n"
                         + "节省：3.40(元)\n"
                         + "获得积分：1分\n"
+                        + "----------------------\n"
+                        + "积分可换取以下物品：\n"
+                        + "10元代金券：100分\n"
                         + "**********************\n";
         assertThat(actualShoppingList, is(expectedShoppingList));
     }

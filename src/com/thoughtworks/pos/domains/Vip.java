@@ -20,6 +20,8 @@ public class Vip {
 
     public String getName(){ return  this.name;}
 
+    public void setPoint(int point) {this.point = point; }
+
     public int getPoint(){ return  this.point;}
 
     public boolean getVip(){ return  this.isVip;}

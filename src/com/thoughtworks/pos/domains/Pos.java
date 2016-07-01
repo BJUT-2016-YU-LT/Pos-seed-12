@@ -2,6 +2,8 @@ package com.thoughtworks.pos.domains;
 
 import com.thoughtworks.pos.common.EmptyShoppingCartException;
 import com.thoughtworks.pos.services.services.ReportDataGenerator;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -13,6 +15,10 @@ public class Pos {
 
     public String getShoppingList(ShoppingChart shoppingChart, Vip user) throws EmptyShoppingCartException {
         Report report = new ReportDataGenerator(shoppingChart).generate();
+        ArrayList<Present> PresentList = new ArrayList<Present>();
+        PresentList.add(new Present("10元代金券",100));
+        PresentList.add(new Present("32G容量U盘",500));
+        PresentList.add(new Present("10000mA充电宝",1000));
         SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         StringBuilder shoppingListBuilder = new StringBuilder()
                 .append("***商店购物清单***\n")
@@ -55,15 +61,32 @@ public class Pos {
         if ( report.getSaving(user) != 0)
             subStringBuilder
                     .append("节省：").append(String.format("%.2f", report.getSaving(user))).append("(元)").append("\n");
-        if(user.getVip() == true && user.getPoint() >= 0 && user.getPoint() <= 200)
+        if(user.getVip() == true) {
+            if ( user.getPoint() >= 0 && user.getPoint() <= 200) {
+                subStringBuilder
+                        .append("获得积分：").append(String.format("%d", (int) report.getTotal(user) / 5)).append("分").append("\n");
+                user.setPoint(user.getPoint() + (int) report.getTotal(user) / 5);
+            }
+            else if (user.getPoint() > 200 && user.getPoint() <= 500) {
+                subStringBuilder
+                        .append("获得积分：").append(String.format("%d", (int) report.getTotal(user) / 5 * 3)).append("分").append("\n");
+                user.setPoint(user.getPoint() + (int) report.getTotal(user) / 5 * 3);
+            }
+            else if (user.getPoint() > 500) {
+                subStringBuilder
+                        .append("获得积分：").append(String.format("%d", (int) report.getTotal(user) / 5 * 5)).append("分").append("\n");
+                user.setPoint(user.getPoint() + (int) report.getTotal(user) / 5 * 5);
+            }
             subStringBuilder
-                    .append("获得积分：").append(String.format("%d", (int)report.getTotal(user) / 5)).append("分").append("\n");
-        else if(user.getVip() == true && user.getPoint() > 200 && user.getPoint() <= 500)
-            subStringBuilder
-                    .append("获得积分：").append(String.format("%d", (int)report.getTotal(user) / 5 * 3)).append("分").append("\n");
-        else if(user.getVip() == true && user.getPoint() > 500)
-            subStringBuilder
-                    .append("获得积分：").append(String.format("%d", (int)report.getTotal(user) / 5 * 5)).append("分").append("\n");
+                    .append("----------------------\n")
+                    .append("积分可换取以下物品：\n");
+            for(Present p : PresentList)
+            {
+                if(p.getPoint() <= user.getPoint())
+                    subStringBuilder
+                            .append(p.getName()).append("：").append(p.getPoint()).append("分").append("\n");
+            }
+        }
         return subStringBuilder
                     .append("**********************\n")
                     .toString();
