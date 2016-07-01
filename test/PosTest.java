@@ -148,6 +148,30 @@ public class PosTest {
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
     @Test
+    public void testGetCorrectShoppingListWhenIsNotVip() throws Exception{
+        // given
+        ShoppingChart shoppingChart = new ShoppingChart();
+        Vip vip = new Vip("USER0001","张三", 0, false);
+        shoppingChart.add(new Item("ITEM000000", "雪碧", "瓶", 2.00, 0.8, false, 0.9));
+
+        // when
+        Pos pos = new Pos();
+        String actualShoppingList = pos.getShoppingList(shoppingChart, vip);
+
+        // then
+        String expectedShoppingList =
+                "***商店购物清单***\n"
+                        + "姓名：张三\n"
+                        + "打印时间：" +  df.format(new Date())
+                        + "\n----------------------\n"
+                        + "名称：雪碧，数量：1瓶，单价：2.00(元)，小计：1.60(元)\n"
+                        + "----------------------\n"
+                        + "总计：1.60(元)\n"
+                        + "节省：0.40(元)\n"
+                        + "**********************\n";
+        assertThat(actualShoppingList, is(expectedShoppingList));
+    }
+    @Test
     public void testGetCorrectShoppingListWhenDifferentItemHaveSameItemName() throws  Exception{
         // given
         ShoppingChart shoppingChart = new ShoppingChart();
@@ -213,7 +237,7 @@ public class PosTest {
         assertThat(actualShoppingList, is(expectedShoppingList));
     }
     @Test
-    public void testShouldSupportDiscountWhenHavingOneFavourableItemss() throws Exception {
+    public void testShouldSupportDiscountWhenHavingFavourableItemss() throws Exception {
         // given
         ShoppingChart shoppingChart = new ShoppingChart();
         Vip vip = new Vip("USER0001","张三", 200, true);

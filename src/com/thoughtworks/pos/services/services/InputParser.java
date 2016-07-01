@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.thoughtworks.pos.domains.*;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
+
 import java.io.*;
 import java.util.HashMap;
 /**
@@ -52,13 +52,16 @@ public class InputParser {
     }
 
     public Vip BuildVip() throws IOException {
+        Vip vip;
         String VipListStr = FileUtils.readFileToString(vipFile);
         String User = FileUtils.readFileToString(itemsFile);
         JSONObject user = JSONObject.fromObject(User);
         JSONObject viplist = JSONObject.fromObject(VipListStr);
         User = user.get("user").toString();
         viplist = viplist.getJSONObject(User);
-        Vip vip = new Vip(User,viplist.get("name").toString(), Integer.parseInt(viplist.get("point").toString()), Boolean.valueOf(viplist.get("isVip").toString()));
+        if(viplist.isEmpty())
+            vip = new Vip("Unknown","UnknownUser", 0, false);
+        else vip = new Vip(User,viplist.get("name").toString(), Integer.parseInt(viplist.get("point").toString()), Boolean.valueOf(viplist.get("isVip").toString()));
         return vip;
     }
 
